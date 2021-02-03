@@ -1,11 +1,4 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-// CAVEAT: This sample is to demonstrate azure IoT client concepts only and is not a guide design principles or style
-// Checking of return codes and error values shall be omitted for brevity.  Please practice sound engineering practices
-// when writing production code.
-
-// Note: PLEASE see https://github.com/Azure/azure-iot-arduino#simple-sample-instructions for detailed sample setup instructions.
+// Note: PLEASE see https://github.com/Azure/azure-iot-arduino#simple-sample-instructions for detailed sample setup instructions for Azure IoT SDK
 // Note2: To use this sample with the esp32, you MUST build the AzureIoTSocket_WiFi library by using the make_sdk.py,
 //        found in https://github.com/Azure/azure-iot-pal-arduino/tree/master/build_all. 
 //        Command line example: python3 make_sdk.py -o <your-lib-folder>
@@ -88,7 +81,7 @@ byte brightness = 255;
 
 /******************************** GLOBALS for fade/flash *******************************/
 bool stateOn = true;
-bool startFade = false;
+bool startFade = true;
 bool onbeforeflash = false;
 unsigned long lastLoop = 0;
 int transitionTime = 0;
@@ -211,7 +204,7 @@ static IOTHUBMESSAGE_DISPOSITION_RESULT receive_message_callback(IOTHUB_MESSAGE_
         strncpy(strMessage, (const char *)buffer, size);
         strMessage[size] = '\0';
         
-        red = 0;
+        effectString = strMessage;
 
         LogInfo("Received Message [%d]\r\n Message ID: %s\r\n Data: <<< %s >>> & Size=%d\r\n", *counter, messageId, buffer, (int)size);
         free(strMessage);
@@ -397,6 +390,10 @@ void setup() {
         (void)IoTHubDeviceClient_LL_SetConnectionStatusCallback(device_ll_handle, connection_status_callback, NULL);
 
     }
+
+    realRed = map(red, 0, 255, 0, brightness);
+    realGreen = map(green, 0, 255, 0, brightness);
+    realBlue = map(blue, 0, 255, 0, brightness);
 }
 
 void loop(void)
@@ -410,21 +407,21 @@ void loop(void)
     IoTHubDeviceClient_LL_DoWork(device_ll_handle);
     ThreadAPI_Sleep(3);
 
-    startFade = true;
-    inFade = false; // Kill the current fade
+    // startFade = true;
+    // inFade = false; // Kill the current fade
 
-    if (stateOn) {
+    // if (stateOn) {
 
-    realRed = map(red, 0, 255, 0, brightness);
-    realGreen = map(green, 0, 255, 0, brightness);
-    realBlue = map(blue, 0, 255, 0, brightness);
-    }
-    else {
+    // realRed = map(red, 0, 255, 0, brightness);
+    // realGreen = map(green, 0, 255, 0, brightness);
+    // realBlue = map(blue, 0, 255, 0, brightness);
+    // }
+    // else {
 
-    realRed = 0;
-    realGreen = 0;
-    realBlue = 0;
-    }
+    // realRed = 0;
+    // realGreen = 0;
+    // realBlue = 0;
+    // }
 
     led_loop();
     // setColor(255,255,255);

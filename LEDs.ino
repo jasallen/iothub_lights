@@ -518,13 +518,13 @@ void setColor(int inR, int inG, int inB) {
 
   FastLED.show();
 
-  Serial.println("Setting LEDs:");
-  Serial.print("r: ");
-  Serial.print(inR);
-  Serial.print(", g: ");
-  Serial.print(inG);
-  Serial.print(", b: ");
-  Serial.println(inB);
+  // Serial.println("Setting LEDs:");
+  // Serial.print("r: ");
+  // Serial.print(inR);
+  // Serial.print(", g: ");
+  // Serial.print(inG);
+  // Serial.print(", b: ");
+  // Serial.println(inB);
 }
 
 
